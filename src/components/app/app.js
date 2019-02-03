@@ -1,34 +1,40 @@
-import React from 'react';
-import {Col, Row, Container} from 'reactstrap';
+import React, { Component } from 'react';
+import {Container} from 'reactstrap';
 import Header from '../header';
 import RandomChar from '../randomChar';
-import ItemList from '../itemList';
-import CharDetails from '../charDetails';
+import ErrorMessage from '../errorMessage'
+import gotService from '../../services/gotService'
+import {CharacterPage, BookPage, HousePage, BooksItem, HomePage} from '../Pages'
+import {BrowserRouter as Router, Route} from 'react-router-dom'
 
+export default class App extends Component {
 
-const App = () => {
-    return (
-        <> 
-            <Container>
-                <Header />
-            </Container>
-            <Container>
-                <Row>
-                    <Col lg={{size: 5, offset: 0}}>
-                        <RandomChar/>
-                    </Col>
-                </Row>
-                <Row>
-                    <Col md='6'>
-                        <ItemList />
-                    </Col>
-                    <Col md='6'>
-                        <CharDetails />
-                    </Col>
-                </Row>
-            </Container>
-        </>
-    );
+    render() {
+        
+
+        return (
+            <Router>
+                <div className="app">
+                    <Container>
+                        <Header />
+                    </Container>
+                    <Container>
+                       
+                        <Route path='/home' exact component={HomePage}/>
+                        <Route path='/characters' exact component={CharacterPage}/>
+                        <Route path='/houses' exact component={HousePage}/>
+                        <Route path='/books' exact component={BookPage}/>
+                        <Route path='/books/:id' render={
+                            ({match}) => {
+                                const {id} = match.params
+                                return <BooksItem bookId={id}/>
+                            }
+                        }/>
+                    </Container>
+                </div>
+            </Router>
+
+        );
+    }
 };
 
-export default App;
